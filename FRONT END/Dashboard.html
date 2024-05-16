@@ -1,3 +1,4 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,23 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UEBA Dashboard</title>
     <link rel="stylesheet" href="Dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Add Chart.js -->
 </head>
 
 <body>
+    <div class="pie-chart-container">
+        <canvas id="pieChart"></canvas>
+    </div>
+
+
     <div class="dashboard">
         <div class="sidebar">
             <h1></h1>
-            <!-- <h2>to UEBA Dashboard</h2>
-            <ul>
-                <li><a href="Dashboard.html">Dashboard</a></li>
-                <li><a href="User_Profile.html">User Profile</a></li>
-            </ul> -->
             <button id="logoutButton">Logout</button>
         </div>
         <div class="main-content">
-            <!-- <div class="header">
-                <h2>Welcome to Dashboard</h2>
-            </div> -->
             <div class="cards">
                 <div class="card" id="totalUsersCard">
                     <h3>Total Users</h3>
@@ -38,12 +37,18 @@
                 </div>
             </div>
         </div>
+        <div class="pie-chart-container"> <!-- Add a container for the pie chart -->
+            <canvas id="pieChart" width="200" height="200"></canvas> <!-- Add canvas for the pie chart -->
+        </div>
     </div>
+
     <table id="data-table">
         <thead>
             <tr>
-                <th>User ID</th>
-                <th>Insider</th>
+                <th>Alert ID</th>
+                <th>Date</th>
+                <th>Anomaly ID</th>
+                <th>Anomaly Scenario</th>
                 <th class="triaged-column">Triaged</th>
             </tr>
         </thead>

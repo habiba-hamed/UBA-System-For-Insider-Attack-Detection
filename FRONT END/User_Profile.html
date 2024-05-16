@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profiling</title>
+    <link rel="stylesheet" href="User_Profile.css">
+</head>
+
+<body>
+    <div class="button-container">
+        <button id="backButton">Back</button>
+        <button id="logoutButton">Logout</button>
+    </div>
+    <h1>User Profiling</h1>
+    <table id="userProfileTable">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Anomaly ID</td>
+                <td id="anomalyId"></td>
+            </tr>
+            <tr>
+                <td>Anomaly Name</td>
+                <td id="anomalyName"></td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td id="role"></td>
+            </tr>
+            <tr>
+                <td>Functional Unit</td>
+                <td id="functionalUnit"></td>
+            </tr>
+            <tr>
+                <td>Department</td>
+                <td id="department"></td>
+            </tr>
+            <tr>
+                <td>Team</td>
+                <td id="team"></td>
+            </tr>
+            <tr>
+                <td>Supervisor</td>
+                <td id="supervisor"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="User_Profile.js"></script>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = 'dashboard.html';
+        });
+
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+
+</html>

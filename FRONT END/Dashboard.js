@@ -3,13 +3,13 @@
 //     fetchUsername();
 
 //     // Fetch total users count
-//     fetchUserData('totalUsers');
+//     fetchUserData('/api/totalUsers', 'totalUsersCount');
 
 //     // Fetch active users count
-//     fetchUserData('activeUsers');
+//     fetchUserData('/api/activeUsers', 'activeUsersCount');
 
-//     // Fetch number of alerts
-//     fetchUserData('alerts');
+//     // Fetch alerts count
+//     fetchUserData('/api/alerts', 'alertsCount');
 
 //     // Fetch and populate table data
 //     fetchTableData();
@@ -33,8 +33,8 @@
 //         .catch(error => console.error('Error fetching username:', error));
 // }
 
-// function fetchUserData(type) {
-//     fetch(`/api/${type}`)
+// function fetchUserData(url, targetElementId) {
+//     fetch(url)
 //         .then(response => {
 //             if (!response.ok) {
 //                 throw new Error('Network response was not ok');
@@ -43,13 +43,7 @@
 //         })
 //         .then(data => {
 //             const count = data.count;
-//             if (type === 'totalUsers') {
-//                 document.getElementById('totalUsersCount').textContent = count;
-//             } else if (type === 'activeUsers') {
-//                 document.getElementById('activeUsersCount').textContent = count;
-//             } else if (type === 'alerts') {
-//                 document.getElementById('alertsCount').textContent = count;
-//             }
+//             document.getElementById(targetElementId).textContent = count;
 //         })
 //         .catch(error => console.error('Error fetching data:', error));
 // }
@@ -69,7 +63,7 @@
 //         })
 //         .catch(error => console.error('Error fetching table data:', error));
 // }
-//--------
+
 // function populateTable(data) {
 //     const tableBody = document.getElementById('data-table-body');
 
@@ -78,22 +72,29 @@
 //         const row = document.createElement('tr');
 
 //         // Create table cells for each column
-//         const userIdCell = document.createElement('td');
-//         userIdCell.textContent = rowData.userId;
-//         row.appendChild(userIdCell);
+//         const alertIdCell = document.createElement('td');
+//         alertIdCell.textContent = rowData.alertId;
+//         row.appendChild(alertIdCell);
 
-//         const insiderCell = document.createElement('td');
-//         insiderCell.textContent = rowData.insider;
-//         row.appendChild(insiderCell);
+//         const dateCell = document.createElement('td');
+//         dateCell.textContent = rowData.date;
+//         row.appendChild(dateCell);
 
+//         const anomalyIdCell = document.createElement('td');
+//         anomalyIdCell.textContent = rowData.anomalyId;
+//         row.appendChild(anomalyIdCell);
+
+//         const anomalySCCell = document.createElement('td');
+//         anomalySCCell.textContent = rowData.anomalySC;
+//         row.appendChild(anomalySCCell);
+
+//         // Create the Triaged cell with red light
 //         const triagedCell = document.createElement('td');
-//         triagedCell.textContent = rowData.triaged;
-//         row.appendChild(triagedCell);
-
-//         // Add click event listener to toggle triaged value
-//         row.addEventListener('click', () => {
+//         triagedCell.classList.add('red-led'); // Add the red-led class by default
+//         triagedCell.addEventListener('click', () => {
 //             toggleTriagedValue(triagedCell);
 //         });
+//         row.appendChild(triagedCell);
 
 //         // Append the row to the table body
 //         tableBody.appendChild(row);
@@ -101,10 +102,48 @@
 // }
 
 // function toggleTriagedValue(cell) {
-//     // Toggle between "Yes" and "No"
-//     cell.textContent = cell.textContent === "Yes" ? "No" : "Yes";
+//     cell.classList.toggle('red-led');
+//     cell.classList.toggle('transparent-led');
 // }
-//--------------
+
+
+
+function drawPieChart() {
+    const data = {
+        labels: ['Sc-1: Data Exfiltration', 'Sc-2: Intellectual property thief', 'Sc-3: KeyLogger'],
+        datasets: [{
+            data: [30, 40, 30], // Sample data percentages
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 206, 86, 0.7)'
+            ]
+        }]
+    };
+
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'right',
+                    labels: {
+                        color: 'black' // 'fontColor' is deprecated, use 'color'
+                    }
+                }
+            }
+        }
+    });
+}
+
+drawPieChart();
+
+
+
+
 
 function populateTable(data) {
     const tableBody = document.getElementById('data-table-body');
@@ -114,58 +153,62 @@ function populateTable(data) {
         const row = document.createElement('tr');
 
         // Create table cells for each column
-        const userIdCell = document.createElement('td');
-        userIdCell.textContent = rowData.userId;
-        row.appendChild(userIdCell);
+        const alertIdCell = document.createElement('td');
+        alertIdCell.textContent = rowData.alertId;
+        row.appendChild(alertIdCell);
 
-        const insiderCell = document.createElement('td');
-        insiderCell.textContent = rowData.insider;
-        row.appendChild(insiderCell);
+        const dateCell = document.createElement('td');
+        dateCell.textContent = rowData.date;
+        row.appendChild(dateCell);
+
+        const anomalyIdCell = document.createElement('td');
+        const anomalyIdLink = document.createElement('a');
+        anomalyIdLink.textContent = rowData.anomalyId;
+        anomalyIdLink.href = `User_Profile.html?anomalyId=${rowData.anomalyId}`; // Redirect to User Profile with anomalyId as query parameter
+        anomalyIdCell.appendChild(anomalyIdLink);
+        row.appendChild(anomalyIdCell);
+
+        const anomalySCCell = document.createElement('td');
+        anomalySCCell.textContent = rowData.anomalySC;
+        row.appendChild(anomalySCCell);
 
         const triagedCell = document.createElement('td');
-        triagedCell.classList.add('red-led'); // Add the red-led class by default
-        row.appendChild(triagedCell);
-
-        // Add click event listener to toggle triaged value
-        row.addEventListener('click', () => {
+        triagedCell.classList.add('red-led');
+        triagedCell.addEventListener('click', () => {
             toggleTriagedValue(triagedCell);
         });
+        row.appendChild(triagedCell);
 
-        // Append the row to the table body
         tableBody.appendChild(row);
     });
 }
+
 function toggleTriagedValue(cell) {
     cell.classList.toggle('red-led');
     cell.classList.toggle('transparent-led');
 }
 
-// Add event listener to logout button
 document.getElementById('logoutButton').addEventListener('click', function () {
-    // Clear sessionStorage
     sessionStorage.removeItem('username');
-    // Redirect to login page
     window.location.href = "login.html";
 });
 
-
-
-// SIMULATE THE BACKEND!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 document.addEventListener("DOMContentLoaded", function () {
-    // Fetch total users count
-    fetchUserData('/api/totalUsers', 'totalUsersCount');
-
-    // Fetch active users count
-    fetchUserData('/api/activeUsers', 'activeUsersCount');
-
-    // Fetch number of alerts
-    fetchUserData('/api/alerts', 'alertsCount');
-    // Retrieve username from sessionStorage
     const username = sessionStorage.getItem('username');
-
-    // Display username in the sidebar
     const sidebarTitle = document.querySelector('.sidebar h1');
     sidebarTitle.textContent = username ? 'Welcome ' + username : '';
+
+    fetchUserData('/api/totalUsers', 'totalUsersCount');
+    fetchUserData('/api/activeUsers', 'activeUsersCount');
+    fetchUserData('/api/alerts', 'alertsCount');
+
+    const mockTableData = [
+        { alertId: 1, date: "2024-05-15", anomalyId: 101, anomalySC: "1", triaged: true },
+        { alertId: 2, date: "2024-05-16", anomalyId: 102, anomalySC: "2", triaged: false },
+        { alertId: 3, date: "2024-05-17", anomalyId: 103, anomalySC: "3", triaged: false },
+        // Add more data as needed
+    ];
+    populateTable(mockTableData);
 });
 
 function fetchUserData(url, targetElementId) {
@@ -179,7 +222,6 @@ function fetchUserData(url, targetElementId) {
 
 function handleRequest(url) {
     return new Promise((resolve, reject) => {
-        // Simulate network delay
         setTimeout(() => {
             if (url === '/api/totalUsers') {
                 resolve({ count: totalUsersCount });
@@ -190,24 +232,10 @@ function handleRequest(url) {
             } else {
                 reject(new Error('Invalid endpoint'));
             }
-        }, 1000); // Simulated delay of 1 second
+        }, 1000);
     });
 }
 
-// Mock data representing total users, active users, and alerts count
 const totalUsersCount = 1000;
 const activeUsersCount = 750;
-const alertsCount = 20; // Example value, replace with actual alerts count
-
-// Define mock table data
-const mockTableData = [
-    { userId: 1, insider: "Yes" },
-    { userId: 2, insider: "No" },
-    { userId: 3, insider: "Yes" },
-    { userId: 3, insider: "Yes" },
-    { userId: 3, insider: "Noooooooooooooooooooo" }
-];
-
-// Call populateTable function with mock data
-populateTable(mockTableData);
-
+const alertsCount = 20; 
