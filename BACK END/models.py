@@ -1,11 +1,12 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime, func
 import database
 
 
-class Alert(database.Base):
-    __tablename__ = 'alert'
+class Alerts(database.Base):
+    __tablename__ = 'alerts'
 
     alert_id = Column(Integer, primary_key=True, index=True)
+    date = Column(DateTime)
     anomaly_id = Column(String)
     anomaly_sc = Column(String)
 
