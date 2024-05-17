@@ -17,9 +17,8 @@ class Soc(database.Base):
     soc_name = Column(String)
     soc_pass = Column(String)
 
-class User(database.Base):
-    __tablename__ = 'user'
+class Users(database.Base):
+    __tablename__ = 'users'
 
-    user_no = Column(Integer, primary_key=True, index=True)
-    user_encoded_id = Column(String, unique=True, index=True)
-    user_decoded_id = Column(String)
+    user_raw = Column(Integer, primary_key=True, index=True)
+    user_feature = Column(Integer, primary_key=True, index=True)

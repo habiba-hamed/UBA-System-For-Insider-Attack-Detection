@@ -27,6 +27,16 @@ def alerts_count(db: Session = Depends(database.get_db)):
         return {"alerts_count": ctr}
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
+
+@app.get("/users_count/")
+def users_count(db: Session = Depends(database.get_db)):
+    try:
+        ctr = db.query(models.Users).count()
+        return {"users_count": ctr}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
