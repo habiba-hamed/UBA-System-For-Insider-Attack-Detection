@@ -74,6 +74,11 @@ def insiders_data(db: Session = Depends(database.get_db)):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
 
+@app.get("/anomaly_report/{anomaly_id}")
+def anomaly_report(anomaly_id: str, db: Session = Depends(database.get_db)):
+    try:
+        anomaly_data = db.query(models.Reporting).filter_by(user_id=anomaly_id).first()
+        return anomaly_data
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
 
