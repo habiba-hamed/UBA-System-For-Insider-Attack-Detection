@@ -22,3 +22,14 @@ class Users(database.Base):
 
     user_raw = Column(Integer, primary_key=True, index=True)
     user_feature = Column(Integer, primary_key=True, index=True)
+
+class Reporting(database.Base):
+    __tablename__ = 'reporting'
+
+    employee_name = Column(String)
+    user_id = Column(Integer, primary_key=True, index=True)
+    role = Column(String)
+    functional_unit = Column(String)
+    department = Column(String)
+    team = Column(String)
+    supervisor = Column(String)
