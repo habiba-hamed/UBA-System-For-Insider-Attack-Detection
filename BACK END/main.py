@@ -20,15 +20,24 @@ class LoginRequest(BaseModel):
     soc_name: str  # Change from user_encoded_id to soc_name
     soc_pass: str  # Add the password field
 
+# Function to authenticate user
+def authenticate_user(db: Session, login_request: LoginRequest):
+    return db.query(models.Soc).filter_by(soc_name=login_request.soc_name, soc_pass=login_request.soc_pass).first()
+
 @app.post("/login/")
 def login(login_request: LoginRequest, db: Session = Depends(database.get_db)):
-    # Query the Soc table instead of the User table
-    soc = db.query(models.Soc).filter_by(soc_name=login_request.soc_name, soc_pass=login_request.soc_pass).first()
+    # Authenticate user
+    soc = authenticate_user(db, login_request)
 
     if not soc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
 
-    return {"message": "Login successful"}
+    # Store username in session (here using a secure HTTP-only cookie)
+    response = JSONResponse(content={"message": "Login successful"})
+    response.set_cookie(key="username", value=soc.soc_name, httponly=True, max_age=3600)  # Max age of the cookie (1 hour) 
+
+    return response
+
 
 @app.get("/alerts_count/")
 def alerts_count(db: Session = Depends(database.get_db)):
