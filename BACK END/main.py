@@ -40,6 +40,13 @@ def login(login_request: LoginRequest, db: Session = Depends(database.get_db)):
 
     return response
 
+@app.get("/get_username/")
+def get_username(username: str = Cookie(None)):
+    if not username:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+
+    response = JSONResponse(content={"username": username})
+    return response
 
 @app.get("/alerts_count/")
 def alerts_count(db: Session = Depends(database.get_db)):
