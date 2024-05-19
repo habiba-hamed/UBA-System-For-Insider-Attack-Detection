@@ -66,6 +66,14 @@ def users_count(db: Session = Depends(database.get_db)):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
 
+@app.get("/insiders_data/")
+def insiders_data(db: Session = Depends(database.get_db)):
+    try:
+        table = db.query(models.Alerts).all()
+        return table
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
+
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
 
