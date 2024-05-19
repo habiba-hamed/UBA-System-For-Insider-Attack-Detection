@@ -52,7 +52,8 @@ def get_username(username: str = Cookie(None)):
 def alerts_count(db: Session = Depends(database.get_db)):
     try:
         ctr = db.query(models.Alerts).count()
-        return {"alerts_count": ctr}
+        response = JSONResponse(content={"alerts_count": ctr})
+        return response
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
 
@@ -60,7 +61,11 @@ def alerts_count(db: Session = Depends(database.get_db)):
 def users_count(db: Session = Depends(database.get_db)):
     try:
         ctr = db.query(models.Users).count()
-        return {"users_count": ctr}
+        response = JSONResponse(content={"users_count": ctr})
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
+
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e
 
