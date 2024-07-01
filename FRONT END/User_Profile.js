@@ -35,6 +35,19 @@ function fetchAnomalyData(anomalyId) {
     });
 }
 
+// Function to fetch anomaly data from the backend using AJAX
+/*
+function fetchAnomalyDataFromBackend(anomalyId) {
+    return fetch(`/api/anomalies/${anomalyId}`) // Replace with your backend endpoint
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        });
+}
+*/
+
 // Parse query parameter to get the anomalyId
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -42,6 +55,21 @@ const anomalyId = urlParams.get('anomalyId');
 
 // Simulated backend API request to fetch data related to the anomaly ID
 fetchAnomalyData(anomalyId)
+    .then(data => {
+        // Update table with simulated data
+        document.getElementById("anomalyId").textContent = data.anomalyId;
+        document.getElementById("anomalyName").textContent = data.anomalyName;
+        document.getElementById("role").textContent = data.role;
+        document.getElementById("functionalUnit").textContent = data.functionalUnit;
+        document.getElementById("department").textContent = data.department;
+        document.getElementById("team").textContent = data.team;
+        document.getElementById("supervisor").textContent = data.supervisor;
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
+// Fetch data related to the anomaly ID using AJAX
+/*
+fetchAnomalyDataFromBackend(anomalyId)
     .then(data => {
         // Update table with backend data
         document.getElementById("anomalyId").textContent = data.anomalyId;
@@ -53,6 +81,7 @@ fetchAnomalyData(anomalyId)
         document.getElementById("supervisor").textContent = data.supervisor;
     })
     .catch(error => console.error('Error fetching data:', error));
+*/
 
 // Event listener for the "Back" button
 document.getElementById('backButton').addEventListener('click', function() {
@@ -63,3 +92,4 @@ document.getElementById('backButton').addEventListener('click', function() {
 document.getElementById('logoutButton').addEventListener('click', function() {
     window.location.href = 'login.html';
 });
+
