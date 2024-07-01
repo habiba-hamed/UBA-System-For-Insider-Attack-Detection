@@ -239,3 +239,4 @@ function handleRequest(url) {
 const totalUsersCount = 1000;
 const activeUsersCount = 750;
 const alertsCount = 20; 
+
